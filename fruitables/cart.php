@@ -3,7 +3,7 @@
 require ('conn.php');
 session_start();
 
-if (!isset($_SESSION['customer_id'])) {
+if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
 	header("Location: ../login/dist/");
 	exit();
 }
