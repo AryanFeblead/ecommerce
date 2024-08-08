@@ -35,4 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['actionName']) && $_POST['actionName'] == 'update_cart_quantity') {
         update_cart_quantity();
     }
+    if (isset($_POST['actionName']) && $_POST['actionName'] == 'all_search') {
+        all_search();
+    }
 }

@@ -71,7 +71,7 @@ require('conn.php');
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="cart.html" class="dropdown-item">Cart</a>
-                                    <a href="chackout.html" class="dropdown-item">Chackout</a>
+                                    <a href="checkout.html" class="dropdown-item">Checkout</a>
                                 </div>
                             </div>
                             <a href="contact.html" class="nav-item nav-link active">Contact</a>
@@ -117,8 +117,7 @@ require('conn.php');
         <div class="container-fluid page-header py-5">
             <h1 class="text-center text-white display-6">Contact</h1>
             <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                <li class="breadcrumb-item"><a href="index.php">Home</a></li>
                 <li class="breadcrumb-item active text-white">Contact</li>
             </ol>
         </div>

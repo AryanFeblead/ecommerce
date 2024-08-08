@@ -27,7 +27,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
         <!-- Icon Font Stylesheet -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <!-- Libraries Stylesheet -->
         <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
         <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
@@ -38,6 +38,8 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
 
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
+        <script src="./js/cart.js"></script>
+        <script src="./js/search.js"></script>
     </head>
 
     <body>
@@ -78,14 +80,14 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="cart.php" class="dropdown-item">Cart</a>
-                                    <a href="chackout.php" class="dropdown-item">Chackout</a>
+                                    <a href="checkout.php" class="dropdown-item">Checkout</a>
                                 </div>
                             </div>
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                            <a href="contact.php" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
                             <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                            <a href="#" class="position-relative me-4 my-auto">
+                            <a href="cart.php" class="position-relative me-4 my-auto">
                                 <i class="fa fa-shopping-bag fa-2x"></i>
                                 <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><?php echo isset($_SESSION['cart_item']) ? count($_SESSION['cart_item']) : 0; ?></span>
                             </a>
@@ -110,8 +112,8 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                     </div>
                     <div class="modal-body d-flex align-items-center">
                         <div class="input-group w-75 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                            <input type="search" class="form-control p-3" id="search07" placeholder="keywords" aria-describedby="search-icon-7">
+                            <span id="search-icon-7" class="input-group-text p-3"><i class="fa fa-search"></i></span>
                         </div>
                     </div>
                 </div>
@@ -248,6 +250,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                                                 if (mysqli_num_rows($select) > 0) {
                                                     while ($row = mysqli_fetch_assoc($select)) {
                                                         $fruit_display = '<div class="col-md-6 col-lg-4 col-xl-3">
+                                                        <a href="shop-detail.php?id='. $row['prod_id'] .'">
                                             <div class="rounded position-relative fruite-item">
                                                 <div class="fruite-img">
                                                     <img src="'. $row['prod_img'] .'" class="img-fluid w-100 rounded-top" alt="">
@@ -255,14 +258,14 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">'. $row['prod_category'] .'</div>
                                                 <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                     <h4>'. $row['prod_name'] .'</h4>
-                                                    <p>'. $row['prod_desc'] .'</p>
+                                                    <p class="text-dark">'. $row['prod_desc'] .'</p>
                                                     <div class="d-flex justify-content-between flex-lg-wrap">
                                                         <p class="text-dark fs-5 fw-bold mb-0">'. $row['prod_price'] .' / kg</p>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                                        <a data-id="' . $row['prod_id'] . '" class="btn border border-secondary rounded-pill px-3 text-primary add_cart"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>';
+                                        </a></div>';
                                         echo $fruit_display;
                                                     }
                                                 }
@@ -281,6 +284,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                                         if (mysqli_num_rows($select) > 0) {
                                             while ($row = mysqli_fetch_assoc($select)) {
                                                 $fruit_display = '<div class="col-md-6 col-lg-4 col-xl-3">
+                                                <a href="shop-detail.php?id='. $row['prod_id'] .'">
                                             <div class="rounded position-relative fruite-item">
                                                 <div class="fruite-img">
                                                     <img src="'. $row['prod_img'] .'" class="img-fluid w-100 rounded-top" alt="">
@@ -288,14 +292,14 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">'. $row['prod_category'] .'</div>
                                                 <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                     <h4>'. $row['prod_name'] .'</h4>
-                                                    <p>'. $row['prod_desc'] .'</p>
+                                                    <p class="text-dark">'. $row['prod_desc'] .'</p>
                                                     <div class="d-flex justify-content-between flex-lg-wrap">
                                                         <p class="text-dark fs-5 fw-bold mb-0">'. $row['prod_price'] .' / kg</p>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                                        <a data-id="' . $row['prod_id'] . '" class="btn border border-secondary rounded-pill px-3 text-primary add_cart"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>';
+                                        </a></div>';
                                         echo $fruit_display;
                                             }
                                         }
@@ -314,6 +318,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                                         if (mysqli_num_rows($select) > 0) {
                                             while ($row = mysqli_fetch_assoc($select)) {
                                                 $fruit_display = '<div class="col-md-6 col-lg-4 col-xl-3">
+                                                <a href="shop-detail.php?id='. $row['prod_id'] .'">
                                             <div class="rounded position-relative fruite-item">
                                                 <div class="fruite-img">
                                                     <img src="'. $row['prod_img'] .'" class="img-fluid w-100 rounded-top" alt="">
@@ -321,14 +326,14 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">'. $row['prod_category'] .'</div>
                                                 <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                     <h4>'. $row['prod_name'] .'</h4>
-                                                    <p>'. $row['prod_desc'] .'</p>
+                                                    <p class="text-dark">'. $row['prod_desc'] .'</p>
                                                     <div class="d-flex justify-content-between flex-lg-wrap">
                                                         <p class="text-dark fs-5 fw-bold mb-0">'. $row['prod_price'] .' / kg</p>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                                        <a data-id="' . $row['prod_id'] . '" class="btn border border-secondary rounded-pill px-3 text-primary add_cart"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>';
+                                        </a></div>';
                                         echo $fruit_display;
                                             }
                                         }
@@ -404,19 +409,20 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                     if (mysqli_num_rows($select) > 0) {
                         while ($row = mysqli_fetch_assoc($select)) {
                             $fruit_display = '<div class="border border-primary rounded position-relative vesitable-item">
+                            <a href="shop-detail.php?id='. $row['prod_id'] .'">
                         <div class="vesitable-img">
                             <img src="'. $row['prod_img'] .'" class="img-fluid w-100 rounded-top" alt="">
                         </div>
                         <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">'. $row['prod_category'] .'</div>
                         <div class="p-4 rounded-bottom">
                             <h4>'. $row['prod_name'] .'</h4>
-                            <p>'. $row['prod_desc'] .'</p>
+                            <p class="text-dark">'. $row['prod_desc'] .'</p>
                             <div class="d-flex justify-content-between flex-lg-wrap">
                                 <p class="text-dark fs-5 fw-bold mb-0">'. $row['prod_price'] .' / kg</p>
-                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                <a data-id="' . $row['prod_id'] . '" class="btn border border-secondary rounded-pill px-3 text-primary add_cart"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                             </div>
                         </div>
-                    </div>';
+                    </a></div>';
                     echo $fruit_display;
                         }
                     }

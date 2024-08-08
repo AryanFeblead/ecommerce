@@ -82,10 +82,10 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                                 <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="cart.php" class="dropdown-item active">Cart</a>
-                                    <a href="chackout.php" class="dropdown-item">Chackout</a>
+                                    <a href="checkout.php" class="dropdown-item">Checkout</a>
                                 </div>
                             </div>
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                            <a href="contact.php" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
                             <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
@@ -128,8 +128,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
         <div class="container-fluid page-header py-5">
             <h1 class="text-center text-white display-6">Cart</h1>
             <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                <li class="breadcrumb-item"><a href="index.php">Home</a></li>
                 <li class="breadcrumb-item active text-white">Cart</li>
             </ol>
         </div>
@@ -235,7 +234,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                                 <h5 class="mb-0 ps-4 me-4">Total</h5>
                                 <p class="mb-0 pe-4 cart_total">'.$totalAmount.'</p>
                             </div>
-                            <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Proceed Checkout</button>
+                            <a href="checkout.php" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4">Proceed Checkout</a>
                         </div>
                     </div>
                 </div>';

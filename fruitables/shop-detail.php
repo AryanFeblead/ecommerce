@@ -86,7 +86,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                 <a href="cart.php" class="dropdown-item">Cart</a>
-                                <a href="chackout.php" class="dropdown-item">Chackout</a>
+                                <a href="checkout.php" class="dropdown-item">Checkout</a>
                             </div>
                         </div>
                         <a href="contact.php" class="nav-item nav-link">Contact</a>

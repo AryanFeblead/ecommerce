@@ -3,12 +3,12 @@
 require ('conn.php');
 session_start();
 
-if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
-	header("Location: ../login/dist/");
-	exit();
+if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
+    header("Location: ../login/dist/");
+    exit();
 }
-?>
 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,10 +18,6 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,20 +34,12 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
     <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- Template Stylesheet -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-    <!-- DataTables JS -->
-    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <link href="css/style.css" rel="stylesheet">
-    <script src="./js/custome.js"></script>
-    <script src="./js/cart.js"></script>
 
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -93,12 +81,12 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                 <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                     <div class="navbar-nav mx-auto">
                         <a href="index.php" class="nav-item nav-link">Home</a>
-                        <a href="shop.php" class="nav-item nav-link active">Shop</a>
+                        <a href="shop.php" class="nav-item nav-link">Shop</a>
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                            <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Pages</a>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                 <a href="cart.php" class="dropdown-item">Cart</a>
-                                <a href="checkout.php" class="dropdown-item">Checkout</a>
+                                <a href="checkout.php" class="dropdown-item active">Checkout</a>
                             </div>
                         </div>
                         <a href="contact.php" class="nav-item nav-link">Contact</a>
@@ -108,14 +96,16 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                             class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
                             data-bs-toggle="modal" data-bs-target="#searchModal"><i
                                 class="fas fa-search text-primary"></i></button>
-                        <a href="./cart.php" class="position-relative me-4 my-auto">
+                        <a href="#" class="position-relative me-4 my-auto">
                             <i class="fa fa-shopping-bag fa-2x"></i>
                             <span
                                 class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
-                                style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><?php echo isset($_SESSION['cart_item']) ? count($_SESSION['cart_item']) : 0; ?></span>
+                                style="top: -5px; left: 15px; height: 20px; min-width: 20px;">
+                                <?php echo isset($_SESSION['cart_item']) ? count($_SESSION['cart_item']) : 0; ?>
+                            </span>
                         </a>
-                        <a href="logout.php" class="my-auto">
-                            <i class="fa-solid fa-right-from-bracket" style="font-size: 2rem;"></i>
+                        <a href="#" class="my-auto">
+                            <i class="fas fa-user fa-2x"></i>
                         </a>
                     </div>
                 </div>
@@ -148,164 +138,156 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
 
     <!-- Single Page Header start -->
     <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Shop</h1>
+        <h1 class="text-center text-white display-6">Checkout</h1>
         <ol class="breadcrumb justify-content-center mb-0">
             <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-            <li class="breadcrumb-item active text-white">Shop</li>
+            <li class="breadcrumb-item active text-white">Checkout</li>
         </ol>
     </div>
     <!-- Single Page Header End -->
 
 
-    <!-- Fruits Shop Start-->
-    <div class="container-fluid fruite py-5">
+    <!-- Checkout Page Start -->
+    <div class="container-fluid py-5">
         <div class="container py-5">
-            <h1 class="mb-4">Fresh fruits and vegetables shop</h1>
-            <div class="row g-4">
-                <div class="col-lg-12">
-                    <div class="row g-4">
-                        <div class="col-xl-3">
-                            <div class="input-group w-100 mx-auto d-flex">
-                                <input type="search" class="form-control p-3" placeholder="keywords" id="search-in-shop"
-                                    aria-describedby="search-icon-11">
-                                <span id="search-icon-11" class="input-group-text p-3"><i
-                                        class="fa fa-search"></i></span>
+            <h1 class="mb-4">Billing details</h1>
+            <form action="#">
+                <div class="row g-5">
+                    <div class="col-md-12 col-lg-6 col-xl-7">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-item w-100">
+                                    <label class="form-label my-3">First Name<sup>*</sup></label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-item w-100">
+                                    <label class="form-label my-3">Last Name<sup>*</sup></label>
+                                    <input type="text" class="form-control">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-6"></div>
-                        
-                        <div class="col-xl-3">
-                            <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                                <label for="fruits">Default Sorting:</label>
-                                <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3"
-                                    form="fruitform">
-                                    <option value="lowtohigh">Price - Low to High</option>
-                                    <option value="hightolow">Price - High to Low</option>
-                                    <option value="atoz">A-Z Product</option>
-                                    <option value="ztoa">Z-A Product</option>
-                                </select>
-                            </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Company Name<sup>*</sup></label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Address <sup>*</sup></label>
+                            <input type="text" class="form-control" placeholder="House Number Street Name">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Town/City<sup>*</sup></label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Country<sup>*</sup></label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Postcode/Zip<sup>*</sup></label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Mobile<sup>*</sup></label>
+                            <input type="tel" class="form-control">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Email Address<sup>*</sup></label>
+                            <input type="email" class="form-control">
                         </div>
                     </div>
-                    
-                    <div class="row g-4">
-                        <div class="col-lg-3">
-                            <div class="row g-4">
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <h4>Categories</h4>
-                                        <ul class="list-unstyled fruite-categorie">
-                                            <li>
-                                                <div class="d-flex justify-content-between fruite-name">
-                                                    <a href="#" id="all_product_cat"><i
-                                                            class="fas fa-apple-alt me-2"></i>All Products</a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="d-flex justify-content-between fruite-name">
-                                                    <a href="#" id="all_fruit_cat"><i
-                                                            class="fas fa-apple-alt me-2"></i>Fruits</a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="d-flex justify-content-between fruite-name">
-                                                    <a href="#" id="all_vegetable_cat"><i
-                                                            class="fas fa-apple-alt me-2"></i>Vegetables</a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <h4 class="mb-2">Price</h4>
-                                        <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput"
-                                            min="0" max="250" value="0" oninput="amount.value=rangeInput.value">
-                                        <output id="amount" name="amount" min-velue="0" max-value="500"
-                                            for="rangeInput">0</output>
-                                    </div>
-                                    <!-- <a href="#" id="searchbar_search" class="btn btn-primary text-white">Search</a> -->
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="position-relative">
-                                        <img src="img/banner-fruits.jpg" class="img-fluid w-100 rounded" alt="">
-                                        <div class="position-absolute"
-                                            style="top: 50%; right: 10px; transform: translateY(-50%);">
-                                            <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>
+                    <div class="col-md-12 col-lg-6 col-xl-5">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Products</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                if (isset($_SESSION['cart_item']) && !empty($_SESSION['cart_item'])) {
+                                foreach ($_SESSION['cart_item'] as $item) {
+                                    $display_cart = '<tr>
+                                    <th scope="row">
+                                        <div class="d-flex align-items-center mt-2">
+                                            <img src="' . htmlspecialchars($item['prod_img']) . '" class="img-fluid rounded-circle"
+                                                style="width: 90px; height: 90px;" alt="">
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="position-relative">
-                                        <img src="img/banner-fruits.jpg" class="img-fluid w-100 rounded" alt="">
-                                        <div class="position-absolute"
-                                            style="top: 50%; right: 0px; transform: translateY(-50%);">
-                                            <h3 class="text-primary fw-bold">Fresh <br> Vegetables <br> Banner</h3>
-                                        </div>
-                                    </div>
+                                    </th>
+                                    <td class="py-5">Awesome ' . htmlspecialchars($item['prod_name']) . '</td>
+                                    <td class="py-5">' . htmlspecialchars($item['prod_price']) . '</td>
+                                    <td class="py-5">' . htmlspecialchars($item['prod_quantity']) . '</td>
+                                    <td class="py-5">' . htmlspecialchars($item['prod_total']) . '</td>
+                                </tr>';
+                                    echo $display_cart;
+                                }
+                            } else {
+                                $display =  "<h1 class='text-center'>Cart is Empty</h1>";
+                            }
+
+                                    $totalAmount = 0;
+                        
+                            // Calculate total amount
+                            foreach ($_SESSION['cart_item'] as $item) {
+                                $itemTotal = $item['prod_price'] * $item['prod_quantity'];
+                                $totalAmount += $itemTotal;
+                            }
+                        
+                            // Format the total amount for display
+                            $formattedTotal = number_format($totalAmount, 2);
+                            ?>
+                                    <tr>
+                                        <th scope="row">
+                                        </th>
+                                        <td class="py-5">
+                                            <p class="mb-0 text-dark text-uppercase py-3">TOTAL</p>
+                                        </td>
+                                        <td class="py-5"></td>
+                                        <td class="py-5"></td>
+                                        <td class="py-5">
+                                            <div class="py-3 border-bottom border-top">
+                                                <p class="mb-0 text-dark"><?php echo $totalAmount ?></p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                            <div class="col-12">
+                                <div class="form-check text-start my-3">
+                                    <input type="checkbox" class="form-check-input bg-primary border-0" id="Delivery-1"
+                                        name="Delivery" value="Delivery">
+                                    <label class="form-check-label" for="Delivery-1">Cash On Delivery</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-9">
-                            <div id="show-error" style="display:none;"></div>
-                            <div id="search-result" style="display:none;">
-                                <div id="search-result1" class="row g-4 justify-content-center">
+                        <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                            <div class="col-12">
+                                <div class="form-check text-start my-3">
+                                    <input type="checkbox" class="form-check-input bg-primary border-0" id="Paypal-1"
+                                        name="Paypal" value="Paypal">
+                                    <label class="form-check-label" for="Paypal-1">Paypal</label>
                                 </div>
                             </div>
-                            <div class="alert alert-success" id="success" role="alert">
-  This is a success alert—check it out!
-</div>
-<div class="alert alert-danger" id="danger" role="alert">
-  This is a danger alert—check it out!
-</div>
-                            <div id="all_prod" class="row g-4 justify-content-center">
-                                <?php
-
-                                $select = mysqli_query($conn, "SELECT * FROM prod_tbl LIMIT 6");
-                                if (mysqli_num_rows($select) > 0) {
-                                    while ($row = mysqli_fetch_assoc($select)) {
-                                        $fruit_display = ' <div class="col-md-6 col-lg-6 col-xl-4">
-                                        <a href="shop-detail.php?id='. $row['prod_id'] .'">
-                                                                                    <div class="rounded position-relative fruite-item">
-                                                                                        <div class="fruite-img">
-                                                                                            <img src="' . $row['prod_img'] . '" class="img-fluid w-100 rounded-top" alt="">
-                                                                                        </div>
-                                                                                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">' . $row['prod_category'] . '</div>
-                                                                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                                                            <h4>' . $row['prod_name'] . '</h4>
-                                                                                            <p class="text-dark">' . $row['prod_desc'] . '</p>
-                                                                                            <div class="d-flex justify-content-between flex-lg-wrap">
-                                                                                                <p class="text-dark fs-5 fw-bold mb-0">' . $row['prod_price'] . ' / kg</p>
-                                                                                                <a data-id="' . $row['prod_id'] . '" class="btn border border-secondary rounded-pill px-3 text-primary add_cart"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </a></div>';
-                                        echo $fruit_display;
-                                    }
-                                }
-                                ?>
-
-                                <div class="col-12">
-                                    <div class="pagination d-flex justify-content-center mt-5">
-                                        <a href="#" class="rounded">&laquo;</a>
-                                        <a href="#" class="active rounded">1</a>
-                                        <a href="#" class="rounded">2</a>
-                                        <a href="#" class="rounded">3</a>
-                                        <a href="#" class="rounded">4</a>
-                                        <a href="#" class="rounded">5</a>
-                                        <a href="#" class="rounded">6</a>
-                                        <a href="#" class="rounded">&raquo;</a>
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                            <button type="button"
+                                class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Place
+                                Order</button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-    <!-- Fruits Shop End-->
+    <!-- Checkout Page End -->
 
 
     <!-- Footer Start -->
@@ -417,7 +399,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
 
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/lightbox/js/lightbox.min.js"></script>

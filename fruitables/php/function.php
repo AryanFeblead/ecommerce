@@ -66,32 +66,32 @@ function searchbar_data()
 function lowtohigh_data()
 {
     global $conn;
-    
+
     $searchprice = mysqli_real_escape_string($conn, $_POST['searchprice1']);
     $search = mysqli_real_escape_string($conn, $_POST['search']);
-    
-    
+
+
     $queryParts = [];
-    
+
     if (!empty($search)) {
         $queryParts[] = "prod_name LIKE '%$search%'";
     }
-    
+
     if (!empty($searchprice)) {
         $queryParts[] = "prod_price <= $searchprice";
     }
-    
+
     $queryCondition = implode(' AND ', $queryParts);
-    
-    
+
+
     if (empty($queryCondition)) {
-        $queryCondition = '1'; 
+        $queryCondition = '1';
     }
 
     $query = "SELECT * FROM prod_tbl WHERE $queryCondition ORDER BY prod_price ASC";
-    
+
     $select = mysqli_query($conn, $query);
-    
+
     $users = [];
 
     if (mysqli_num_rows($select) > 0) {
@@ -106,32 +106,32 @@ function lowtohigh_data()
 function hightolow_data()
 {
     global $conn;
-    
+
     $searchprice = mysqli_real_escape_string($conn, $_POST['searchprice1']);
     $search = mysqli_real_escape_string($conn, $_POST['search']);
-    
-    
+
+
     $queryParts = [];
-    
+
     if (!empty($search)) {
         $queryParts[] = "prod_name LIKE '%$search%'";
     }
-    
+
     if (!empty($searchprice)) {
         $queryParts[] = "prod_price <= $searchprice";
     }
-    
+
     $queryCondition = implode(' AND ', $queryParts);
-    
-    
+
+
     if (empty($queryCondition)) {
-        $queryCondition = '1'; 
+        $queryCondition = '1';
     }
 
     $query = "SELECT * FROM prod_tbl WHERE $queryCondition ORDER BY prod_price DESC";
-    
+
     $select = mysqli_query($conn, $query);
-    
+
     $users = [];
 
     if (mysqli_num_rows($select) > 0) {
@@ -146,32 +146,32 @@ function hightolow_data()
 function atoz_data()
 {
     global $conn;
-    
+
     $searchprice = mysqli_real_escape_string($conn, $_POST['searchprice1']);
     $search = mysqli_real_escape_string($conn, $_POST['search']);
-    
-    
+
+
     $queryParts = [];
-    
+
     if (!empty($search)) {
         $queryParts[] = "prod_name LIKE '%$search%'";
     }
-    
+
     if (!empty($searchprice)) {
         $queryParts[] = "prod_price <= $searchprice";
     }
-    
+
     $queryCondition = implode(' AND ', $queryParts);
-    
-    
+
+
     if (empty($queryCondition)) {
-        $queryCondition = '1'; 
+        $queryCondition = '1';
     }
 
     $query = "SELECT * FROM prod_tbl WHERE $queryCondition ORDER BY prod_name ASC";
-    
+
     $select = mysqli_query($conn, $query);
-    
+
     $users = [];
 
     if (mysqli_num_rows($select) > 0) {
@@ -186,32 +186,32 @@ function atoz_data()
 function ztoa_data()
 {
     global $conn;
-    
+
     $searchprice = mysqli_real_escape_string($conn, $_POST['searchprice1']);
     $search = mysqli_real_escape_string($conn, $_POST['search']);
-    
-    
+
+
     $queryParts = [];
-    
+
     if (!empty($search)) {
         $queryParts[] = "prod_name LIKE '%$search%'";
     }
-    
+
     if (!empty($searchprice)) {
         $queryParts[] = "prod_price <= $searchprice";
     }
-    
+
     $queryCondition = implode(' AND ', $queryParts);
-    
-    
+
+
     if (empty($queryCondition)) {
-        $queryCondition = '1'; 
+        $queryCondition = '1';
     }
 
     $query = "SELECT * FROM prod_tbl WHERE $queryCondition ORDER BY prod_name DESC";
-    
+
     $select = mysqli_query($conn, $query);
-    
+
     $users = [];
 
     if (mysqli_num_rows($select) > 0) {
@@ -233,13 +233,13 @@ function add_cart_data()
 
     // Fetch product details from the database
     $select = mysqli_query($conn, "SELECT * FROM prod_tbl WHERE prod_id='$id'");
-    
+
     if (!$select) {
         // Query error
         echo json_encode(['status' => 'error', 'message' => 'Query error']);
         return;
     }
-    
+
     $product = mysqli_fetch_assoc($select);
 
     if (!$product) {
@@ -288,7 +288,8 @@ function add_cart_data()
 }
 
 
-function add_cart_delete(){
+function add_cart_delete()
+{
     global $conn;
     session_start();
 
@@ -302,12 +303,13 @@ function add_cart_delete(){
     }
 }
 
-function update_cart_quantity(){
+function update_cart_quantity()
+{
     session_start();
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $itemId = isset($_POST['id']) ? intval($_POST['id']) : 0;
         $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 0;
-        
+
         if ($itemId > 0 && $quantity > 0) {
             if (isset($_SESSION['cart_item'][$itemId])) {
                 $_SESSION['cart_item'][$itemId]['prod_quantity'] = $quantity;
@@ -327,3 +329,25 @@ function update_cart_quantity(){
     }
 }
 
+function all_search()
+{
+    global $conn;
+
+    $search = mysqli_real_escape_string($conn, $_POST['search07']);
+
+    $query = "SELECT * FROM prod_tbl WHERE prod_name LIKE '%$search%' ORDER BY prod_name ASC";
+
+    $select = mysqli_query($conn, $query);
+
+    $users = [];
+
+    if (mysqli_num_rows($select) > 0) {
+        while ($row = mysqli_fetch_assoc($select)) {
+            $users[] = $row;
+        }
+        echo json_encode($users);
+        echo json_encode(["status" => "success", "message" => "Product Search successfully"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "No products found"]);
+    }
+}
