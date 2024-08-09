@@ -6,8 +6,6 @@ require_once 'vendor/autoload.php';
 
 // Initialize Google Client
 $google_client = new Google_Client();
-$google_client->setClientId('621404249359-3si0ntvf50t1oon6nknujt1anmvp636u.apps.googleusercontent.com'); // Replace with your Client ID
-$google_client->setClientSecret('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'); // Replace with your Client Secret
 $google_client->setRedirectUri('http://localhost/fruit/ecommerce/fruitables/'); // Ensure this matches your OAuth 2.0 setup
 $google_client->addScope('email');
 $google_client->addScope('profile');
