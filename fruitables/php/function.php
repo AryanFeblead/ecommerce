@@ -1,6 +1,6 @@
 <?php
 
-require ('conn.php');
+require('conn.php');
 
 
 function view_data()
@@ -349,5 +349,61 @@ function all_search()
         echo json_encode(["status" => "success", "message" => "Product Search successfully"]);
     } else {
         echo json_encode(["status" => "error", "message" => "No products found"]);
+    }
+}
+function checkout()
+{
+    session_start();
+    global $conn;
+    $customer_id = $_SESSION['customer_id'];
+    $cart_item = $_SESSION['cart_item'];
+
+    $prod_names = array_column($cart_item, 'prod_name');
+    $prod_quantites = array_column($cart_item, 'prod_quantity');
+    $prod_prices = array_column($cart_item, 'prod_price');
+
+    $prod_names_string = implode(', ', $prod_names);
+    $prod_quantity_string = implode(', ', $prod_quantites);
+    $prod_price_string = implode(', ', $prod_prices);
+
+
+    $totalAmount = 0;
+
+    // Calculate total amount
+    foreach ($_SESSION['cart_item'] as $item) {
+        $itemTotal = $item['prod_price'] * $item['prod_quantity'];
+        $totalAmount += $itemTotal;
+    }
+
+    $formattedTotal = number_format($totalAmount, 2);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $order_id = 101;
+
+    $sql = "INSERT INTO order_tbl (order_id,prod_name, customer_id, prod_quantity, prod_price) 
+    VALUES ('$order_id','$prod_names_string', '$customer_id', '$prod_quantity_string', '$prod_price_string')";
+
+    mysqli_query($conn, $sql);
+
+        // Get form data
+        $fname = $_POST['fname'];
+        $lname = $_POST['lname'];
+        $address = $_POST['address'];
+        $city = $_POST['city'];
+        $country = $_POST['country'];
+        $postcode = $_POST['postcode'];
+        $mobile = $_POST['mobile'];
+        $email = $_POST['email'];
+
+        $sql1 = "INSERT INTO bill_tbl (fname, lname, address, city, country, postcode, mobile, email, order_id, subtotal, customer_id) 
+                VALUES ( '$fname', '$lname', '$address', '$city', '$country', '$postcode', '$mobile', '$email', '$order_id', '$totalAmount', '$customer_id')";
+
+        if (mysqli_query($conn, $sql1)) {
+            unset($_SESSION['cart_item']);
+            echo json_encode(["status" => "success", "message" => "User added successfully"]);
+        } else {
+            echo json_encode(["status" => "error"]);
+        }
     }
 }

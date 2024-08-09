@@ -1,11 +1,11 @@
 <?php
 
-require ('conn.php');
+require('conn.php');
 session_start();
 
-if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
-	header("Location: ../login/dist/");
-	exit();
+if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
+    header("Location: ../login/dist/");
+    exit();
 }
 ?>
 
@@ -173,7 +173,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                             </div>
                         </div>
                         <div class="col-6"></div>
-                        
+
                         <div class="col-xl-3">
                             <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
                                 <label for="fruits">Default Sorting:</label>
@@ -187,7 +187,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row g-4">
                         <div class="col-lg-3">
                             <div class="row g-4">
@@ -253,11 +253,11 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                                 </div>
                             </div>
                             <div class="alert alert-success" id="success" role="alert">
-  This is a success alert—check it out!
-</div>
-<div class="alert alert-danger" id="danger" role="alert">
-  This is a danger alert—check it out!
-</div>
+                                This is a success alert—check it out!
+                            </div>
+                            <div class="alert alert-danger" id="danger" role="alert">
+                                This is a danger alert—check it out!
+                            </div>
                             <div id="all_prod" class="row g-4 justify-content-center">
                                 <?php
 
@@ -265,7 +265,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
                                 if (mysqli_num_rows($select) > 0) {
                                     while ($row = mysqli_fetch_assoc($select)) {
                                         $fruit_display = ' <div class="col-md-6 col-lg-6 col-xl-4">
-                                        <a href="shop-detail.php?id='. $row['prod_id'] .'">
+                                        <a href="shop-detail.php?id=' . $row['prod_id'] . '">
                                                                                     <div class="rounded position-relative fruite-item">
                                                                                         <div class="fruite-img">
                                                                                             <img src="' . $row['prod_img'] . '" class="img-fluid w-100 rounded-top" alt="">

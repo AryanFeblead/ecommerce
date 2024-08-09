@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $("#val_email,#val_password,#val_role,#success,#notsuccess").hide();
+    console.log('sadasd');
 
     $("#login_form").on("submit", function(e) {
         e.preventDefault();

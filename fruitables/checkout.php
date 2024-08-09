@@ -1,7 +1,8 @@
 <?php
 
-require ('conn.php');
+require('conn.php');
 session_start();
+// include_once 'paypal_config.php';
 
 if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
     header("Location: ../login/dist/");
@@ -20,6 +21,10 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
     <meta content="" name="description">
 
     <!-- Google Web Fonts -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -33,6 +38,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
     <!-- Libraries Stylesheet -->
     <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
     <!-- Customized Bootstrap Stylesheet -->
@@ -40,6 +46,8 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <script src="./js/checkout.js"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AbbWEwFwFmOcu5N7kKOnLvF9Kge61K8t6zJfHObeXcKzEyPYSjFV4xobD0acNOQ3EoQT5uK52Q6k1Npp&components=buttons&enable-funding=paylater,venmo,card" data-sdk-integration-source="integrationbuilder_sc"></script>
 </head>
 
 <body>
@@ -104,8 +112,8 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
                                 <?php echo isset($_SESSION['cart_item']) ? count($_SESSION['cart_item']) : 0; ?>
                             </span>
                         </a>
-                        <a href="#" class="my-auto">
-                            <i class="fas fa-user fa-2x"></i>
+                        <a href="logout.php" class="my-auto">
+                            <i class="fa-solid fa-right-from-bracket" style="font-size: 2rem;"></i>
                         </a>
                     </div>
                 </div>
@@ -151,50 +159,70 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
     <div class="container-fluid py-5">
         <div class="container py-5">
             <h1 class="mb-4">Billing details</h1>
-            <form action="#">
+            <form method="POST">
                 <div class="row g-5">
                     <div class="col-md-12 col-lg-6 col-xl-7">
                         <div class="row">
                             <div class="col-md-12 col-lg-6">
                                 <div class="form-item w-100">
                                     <label class="form-label my-3">First Name<sup>*</sup></label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" id="fname1">
+                                </div>
+                                <div id="fname">
+                                    Please choose a first name.
                                 </div>
                             </div>
                             <div class="col-md-12 col-lg-6">
                                 <div class="form-item w-100">
                                     <label class="form-label my-3">Last Name<sup>*</sup></label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" id="lname1">
+                                </div>
+                                <div id="lname">
+                                    Please choose a last name.
                                 </div>
                             </div>
                         </div>
                         <div class="form-item">
-                            <label class="form-label my-3">Company Name<sup>*</sup></label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-item">
                             <label class="form-label my-3">Address <sup>*</sup></label>
-                            <input type="text" class="form-control" placeholder="House Number Street Name">
+                            <input type="text" class="form-control" placeholder="House Number Street Name" id="address1">
+                            <div id="address">
+                                Please choose a address.
+                            </div>
                         </div>
                         <div class="form-item">
                             <label class="form-label my-3">Town/City<sup>*</sup></label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" id="city1">
+                            <div id="city">
+                                Please choose a city.
+                            </div>
                         </div>
                         <div class="form-item">
                             <label class="form-label my-3">Country<sup>*</sup></label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" id="country1">
+                            <div id="country">
+                                Please choose a Country.
+                            </div>
                         </div>
                         <div class="form-item">
                             <label class="form-label my-3">Postcode/Zip<sup>*</sup></label>
-                            <input type="text" class="form-control">
+                            <input type="number" class="form-control" id="postcode1">
+                            <div id="postcode">
+                                Please choose a postcode.
+                            </div>
                         </div>
                         <div class="form-item">
                             <label class="form-label my-3">Mobile<sup>*</sup></label>
-                            <input type="tel" class="form-control">
+                            <input type="number" class="form-control" id="mobile1">
+                            <div id="mobile">
+                                Please choose a mobile no.
+                            </div>
                         </div>
                         <div class="form-item">
                             <label class="form-label my-3">Email Address<sup>*</sup></label>
-                            <input type="email" class="form-control">
+                            <input type="email" class="form-control" id="email1">
+                            <div id="email">
+                                Please choose a email.
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-6 col-xl-5">
@@ -211,9 +239,9 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                if (isset($_SESSION['cart_item']) && !empty($_SESSION['cart_item'])) {
-                                foreach ($_SESSION['cart_item'] as $item) {
-                                    $display_cart = '<tr>
+                                    if (isset($_SESSION['cart_item']) && !empty($_SESSION['cart_item'])) {
+                                        foreach ($_SESSION['cart_item'] as $item) {
+                                            $display_cart = '<tr>
                                     <th scope="row">
                                         <div class="d-flex align-items-center mt-2">
                                             <img src="' . htmlspecialchars($item['prod_img']) . '" class="img-fluid rounded-circle"
@@ -225,24 +253,19 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
                                     <td class="py-5">' . htmlspecialchars($item['prod_quantity']) . '</td>
                                     <td class="py-5">' . htmlspecialchars($item['prod_total']) . '</td>
                                 </tr>';
-                                    echo $display_cart;
-                                }
-                            } else {
-                                $display =  "<h1 class='text-center'>Cart is Empty</h1>";
-                            }
+                                            echo $display_cart;
+                                        }
+                                        $totalAmount = 0;
 
-                                    $totalAmount = 0;
-                        
-                            // Calculate total amount
-                            foreach ($_SESSION['cart_item'] as $item) {
-                                $itemTotal = $item['prod_price'] * $item['prod_quantity'];
-                                $totalAmount += $itemTotal;
-                            }
-                        
-                            // Format the total amount for display
-                            $formattedTotal = number_format($totalAmount, 2);
-                            ?>
-                                    <tr>
+                                        // Calculate total amount
+                                        foreach ($_SESSION['cart_item'] as $item) {
+                                            $itemTotal = $item['prod_price'] * $item['prod_quantity'];
+                                            $totalAmount += $itemTotal;
+                                        }
+
+                                        // Format the total amount for display
+                                        $formattedTotal = number_format($totalAmount, 2);
+                                        $total = '<tr>
                                         <th scope="row">
                                         </th>
                                         <td class="py-5">
@@ -252,36 +275,53 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
                                         <td class="py-5"></td>
                                         <td class="py-5">
                                             <div class="py-3 border-bottom border-top">
-                                                <p class="mb-0 text-dark"><?php echo $totalAmount ?></p>
+                                                <p class="mb-0 text-dark">' . $totalAmount . '</p>
                                             </div>
                                         </td>
-                                    </tr>
+                                    </tr>';
+                                        echo $total;
+                                    } else {
+                                        $display =  "<h1 class='text-center'>Cart is Empty</h1>";
+                                    }
+
+
+
+                                    ?>
+
                                 </tbody>
                             </table>
+                            <?php
+                            if (!isset($_SESSION['cart_item'])) {
+                                echo $display;
+                            }
+                            ?>
                         </div>
-                        <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                        <?php
+                        if (isset($_SESSION['cart_item'])) {
+                            $payment = '<div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
                             <div class="col-12">
                                 <div class="form-check text-start my-3">
-                                    <input type="checkbox" class="form-check-input bg-primary border-0" id="Delivery-1"
-                                        name="Delivery" value="Delivery">
+                                    <input type="radio" class="form-check-input bg-primary border-0 payment" id="Delivery-1"
+                                        name="payment" value="COD">
                                     <label class="form-check-label" for="Delivery-1">Cash On Delivery</label>
-                                </div>
+                                    </div>
+                                    <div id="payment">
+                                Please choose a payment option.
                             </div>
-                        </div>
-                        <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
-                            <div class="col-12">
-                                <div class="form-check text-start my-3">
-                                    <input type="checkbox" class="form-check-input bg-primary border-0" id="Paypal-1"
-                                        name="Paypal" value="Paypal">
-                                    <label class="form-check-label" for="Paypal-1">Paypal</label>
-                                </div>
                             </div>
                         </div>
                         <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                            <button type="button"
+                            <div id="paypal-button-container"></div>
+                        </div>
+                        <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                            <button id="checkout"
                                 class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Place
                                 Order</button>
-                        </div>
+                        </div>';
+                            echo $payment;
+                        }
+                        ?>
+
                     </div>
                 </div>
             </form>
@@ -398,6 +438,64 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
 
 
     <!-- JavaScript Libraries -->
+    <script>
+        // PayPal button configuration
+        paypal.Buttons({
+            style: {
+                layout: 'vertical', // horizontal | vertical
+                color: 'blue', // gold | blue | silver | white | black
+                shape: 'pill', // pill | rect
+                label: 'paypal' // checkout | pay | buynow | paypal | installment
+            },
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '<?php echo $formattedTotal; ?>', // Total amount
+                            currency_code: 'USD'
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction after buyer approval
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+
+                    // Optionally, send the details to your server for further processing
+                    $.ajax({
+                        url: 'process_payment.php', // Server-side script to handle payment confirmation
+                        type: 'POST',
+                        data: {
+                            orderID: data.orderID,
+                            payerID: details.payer.payer_id,
+                            paymentID: details.id,
+                            amount: '<?php echo $formattedTotal; ?>',
+                            currency: 'USD'
+                        },
+                        success: function(response) {
+                            var data1 = JSON.parse(response);
+                            if (data1.success == true) {
+                                // Redirect to thank you page or update the UI
+                                window.location.href = 'thank_you.php';
+                            } else {
+                                // Handle failure
+                                alert('Payment processing failed. Please try again.');
+                            }
+                        }
+                    });
+                });
+            },
+
+            // Handle payment failure
+            onError: function(err) {
+                console.error('An error occurred during the transaction', err);
+                alert('An error occurred during the transaction. Please try again.');
+            }
+        }).render('#paypal-button-container'); // Render the PayPal button into the container
+    </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>

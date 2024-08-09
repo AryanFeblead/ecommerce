@@ -1,5 +1,5 @@
 <?php 
-require ('google_login.php');
+// require ('google_login.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,7 +47,7 @@ require ('google_login.php');
                 <div class="social-login">
                     <h3>log in via</h3>
                     <div class="social-icons">
-                        <a href="<?php echo htmlspecialchars($google_client->createAuthUrl()); ?>" class="social-login__icon fab fa-google"></a>
+                        <a href="" class="social-login__icon fab fa-google"></a>
                         <a href="#" class="social-login__icon fab fa-facebook"></a>
                     </div>
                 </div>

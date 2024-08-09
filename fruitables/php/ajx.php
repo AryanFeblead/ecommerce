@@ -38,4 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['actionName']) && $_POST['actionName'] == 'all_search') {
         all_search();
     }
+    if (isset($_POST['actionName']) && $_POST['actionName'] == 'checkout') {
+        checkout();
+    }
 }

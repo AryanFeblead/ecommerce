@@ -1,7 +1,7 @@
 <?php
-
+session_start();
 require ('conn.php');
-require ('../login/dist/google_login.php');
+// require ('../login/dist/google_login.php');
 
 if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])){
 	header("Location: ../login/dist/");
