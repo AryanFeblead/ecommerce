@@ -499,6 +499,32 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
                 alert('An error occurred during the transaction. Please try again.');
             }
         }).render('#paypal-button-container'); // Render the PayPal button into the container
+
+        function pay() {
+    var handler = StripeCheckout.configure({
+      key: 'pk_test_51Plows02dkkU9uEGj6o1zd2ttuQDLOuzguqIIer9HsbCSD3xeBp2jr0xErKnMVWFddivtFoGvt8HHjJTXTnpDsi800SRepOstE', // your publisher key id
+      locale: 'auto',
+      token: function (token) {
+        var amount = $('#stripe').val() 
+        $.ajax({
+          url:"payment.php",
+          method: 'post',
+          data: { tokenId: token.id, amount: amount },
+          dataType: "json",
+          success: function( response ) {
+            console.log(response.data);
+            $('#token_response').append( '<br />' + JSON.stringify(response.data));
+          }
+        })
+      }
+    });
+  
+    handler.open({
+      name: 'Demo Site',
+      description: '2 widgets',
+      amount: amount * 100
+    });
+  }
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
