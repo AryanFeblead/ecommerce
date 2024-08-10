@@ -317,7 +317,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
                                 Order</button>
                         </div>
                         <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                            <a href="./stripe/?amount=' . $totalAmount . '" id="checkout"
+                            <a href="./stripe/" id="checkout"
                                 class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Stripe pay</a>
                         </div>
                         <div class="row g-4 text-center align-items-center justify-content-center pt-4">

@@ -44,7 +44,7 @@ require_once 'config.php';
 
                         <button id="submit-button" class="pay">
                             <div class="spinner hidden" id="spinner"></div>
-                            <span id="submit-text">Pay Now (<?php echo $_GET['amount']; ?>)</span>
+                            <span id="submit-text">Pay Now</span>
                         </button>
                     </form>
 
