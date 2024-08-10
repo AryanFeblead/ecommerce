@@ -46,6 +46,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
     <script src="./js/checkout.js"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=AbbWEwFwFmOcu5N7kKOnLvF9Kge61K8t6zJfHObeXcKzEyPYSjFV4xobD0acNOQ3EoQT5uK52Q6k1Npp&components=buttons&enable-funding=paylater,venmo,card" data-sdk-integration-source="integrationbuilder_sc"></script>
 </head>
@@ -311,12 +312,16 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
                             </div>
                         </div>
                         <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                            <div id="paypal-button-container"></div>
-                        </div>
-                        <div class="row g-4 text-center align-items-center justify-content-center pt-4">
                             <button id="checkout"
                                 class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Place
                                 Order</button>
+                        </div>
+                        <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                            <a href="./stripe/?amount=' . $totalAmount . '" id="checkout"
+                                class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Stripe pay</a>
+                        </div>
+                        <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                            <div id="paypal-button-container"></div>
                         </div>';
                             echo $payment;
                         }
@@ -469,7 +474,6 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
                         url: 'process_payment.php', // Server-side script to handle payment confirmation
                         type: 'POST',
                         data: {
-                            orderID: data.orderID,
                             payerID: details.payer.payer_id,
                             paymentID: details.id,
                             amount: '<?php echo $formattedTotal; ?>',
@@ -479,7 +483,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
                             var data1 = JSON.parse(response);
                             if (data1.success == true) {
                                 // Redirect to thank you page or update the UI
-                                window.location.href = 'thank_you.php';
+                                window.location.href = 'thank_you.php?paymentid=' + data1.message + '';
                             } else {
                                 // Handle failure
                                 alert('Payment processing failed. Please try again.');

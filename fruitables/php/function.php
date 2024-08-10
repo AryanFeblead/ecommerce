@@ -379,10 +379,23 @@ function checkout()
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $order_id = 101;
+    $query2 = "SELECT * FROM `order_tbl` order by order_id desc limit 1";
+    $a2 = mysqli_query($conn, $query2);
+    $b2 = mysqli_num_rows($a2);
 
-    $sql = "INSERT INTO order_tbl (order_id,prod_name, customer_id, prod_quantity, prod_price) 
-    VALUES ('$order_id','$prod_names_string', '$customer_id', '$prod_quantity_string', '$prod_price_string')";
+    while ($row2 = mysqli_fetch_assoc($a2)) {
+        $z = $row2['order_id'];
+        $c_id = $z;
+    }
+
+    if ($c_id == NULL) {
+        $order_id = "1001";
+    } else {
+        $order_id = ($c_id + 1);
+    }
+
+    $sql = "INSERT INTO order_tbl (order_id,prod_name, customer_id, prod_quantity, prod_price, payment_mode) 
+    VALUES ('$order_id','$prod_names_string', '$customer_id', '$prod_quantity_string', '$prod_price_string', 'COD')";
 
     mysqli_query($conn, $sql);
 
