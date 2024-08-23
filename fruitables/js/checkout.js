@@ -1,12 +1,12 @@
-$(document).ready(function () {
-    
+$(document).ready(function() {
+
     $("#fname,#lname,#address,#city,#country,#postcode,#mobile,#email,#payment").hide();
-    $("#mobile1").on("input", function () {
+    $("#mobile1").on("input", function() {
         if ($(this).val().length > 10) {
-          $(this).val($(this).val().substring(0, 10));
+            $(this).val($(this).val().substring(0, 10));
         }
-      });
-    $("#checkout").click(function (e) {
+    });
+    $("#checkout").click(function(e) {
         e.preventDefault();
         var isValid = true;
         if ($("#fname1").val() == "") {
@@ -76,18 +76,18 @@ $(document).ready(function () {
                 type: "POST",
                 url: "./php/ajx.php",
                 data: {
-                    fname:fname,
-                    lname:lname,
-                    address:address,
-                    city:city,
-                    country:country,
-                    postcode:postcode,
-                    payment:payment,
-                    mobile:mobile,
-                    email:email,
+                    fname: fname,
+                    lname: lname,
+                    address: address,
+                    city: city,
+                    country: country,
+                    postcode: postcode,
+                    payment: payment,
+                    mobile: mobile,
+                    email: email,
                     actionName: "checkout",
                 },
-                success: function (data) {
+                success: function(data) {
                     $("#fname,#lname,#address,#city,#country,#postcode,#mobile,#email,#payment").hide();
                     var data1 = JSON.parse(data);
                     console.log(data1);
@@ -98,10 +98,12 @@ $(document).ready(function () {
                         $("#danger").show().delay(2000).fadeOut().html("Product Not added");
                     }
                 },
-                error: function () {
+                error: function() {
                     console.error("error");
                 },
             });
         }
     });
+
+
 });

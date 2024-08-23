@@ -2,10 +2,10 @@
     
     if($_POST['tokenId']) {
 
-      require_once('../vendor/autoload.php');
+      require_once('vendor/autoload.php');
     
       //stripe secret key or revoke key
-      $stripeSecret = 'sk_test_51Plows02dkkU9uEGOzM8ooBJ0KOHGqo7qxjgcDfbJsvFHvqyNcTAqeRa5DKgq2NCiy9SUBqYF8MhpdwROBIioZNw00cQ7HYFxC';
+      $stripeSecret = 'sk_test_51Pp54dGC4teGxUj2mgtXt2nvF0T8sNlvVSqtso5NpwxQpqH4N5K1fZSy0vmeyW7bhnBTiNBydUhuovhPRhVZLxR3009z8D1NOm';
 
       // See your keys here: https://dashboard.stripe.com/account/apikeys
       \Stripe\Stripe::setApiKey($stripeSecret);

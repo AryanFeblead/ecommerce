@@ -179,6 +179,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
                                 <label for="fruits">Default Sorting:</label>
                                 <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3"
                                     form="fruitform">
+                                    <option value="def">Filter</option>
                                     <option value="lowtohigh">Price - Low to High</option>
                                     <option value="hightolow">Price - High to Low</option>
                                     <option value="atoz">A-Z Product</option>

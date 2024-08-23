@@ -4,7 +4,7 @@
 */ 
   
 // PayPal configuration 
-define('PAYPAL_ID', ''); 
+define('PAYPAL_ID', 'sb-tt6rc32097822@business.example.com'); 
 define('PAYPAL_SANDBOX', TRUE); //TRUE or FALSE 
  
 define('PAYPAL_RETURN_URL', 'http://localhost/paypal/paypal_success.php'); 

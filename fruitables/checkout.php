@@ -19,6 +19,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Google Web Fonts -->
 
@@ -39,6 +40,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
     <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
 
 
     <!-- Customized Bootstrap Stylesheet -->
@@ -48,7 +50,9 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
     <link href="css/style.css" rel="stylesheet">
     <script src="https://js.stripe.com/v3/"></script>
     <script src="./js/checkout.js"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=AbbWEwFwFmOcu5N7kKOnLvF9Kge61K8t6zJfHObeXcKzEyPYSjFV4xobD0acNOQ3EoQT5uK52Q6k1Npp&components=buttons&enable-funding=paylater,venmo,card" data-sdk-integration-source="integrationbuilder_sc"></script>
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=AbbWEwFwFmOcu5N7kKOnLvF9Kge61K8t6zJfHObeXcKzEyPYSjFV4xobD0acNOQ3EoQT5uK52Q6k1Npp&components=buttons&enable-funding=paylater,venmo,card"
+        data-sdk-integration-source="integrationbuilder_sc"></script>
 </head>
 
 <body>
@@ -185,7 +189,8 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
                         </div>
                         <div class="form-item">
                             <label class="form-label my-3">Address <sup>*</sup></label>
-                            <input type="text" class="form-control" placeholder="House Number Street Name" id="address1">
+                            <input type="text" class="form-control" placeholder="House Number Street Name"
+                                id="address1">
                             <div id="address">
                                 Please choose a address.
                             </div>
@@ -282,7 +287,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
                                     </tr>';
                                         echo $total;
                                     } else {
-                                        $display =  "<h1 class='text-center'>Cart is Empty</h1>";
+                                        $display = "<h1 class='text-center'>Cart is Empty</h1>";
                                     }
 
 
@@ -317,23 +322,30 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
                                 Order</button>
                         </div>
                         <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                            <a href="./stripe/" id="checkout"
-                                class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Stripe pay</a>
-                        </div>
-                        <div class="row g-4 text-center align-items-center justify-content-center pt-4">
                             <div id="paypal-button-container"></div>
                         </div>';
                             echo $payment;
                         }
                         ?>
-
+                        <div class="container">
                     </div>
                 </div>
             </form>
         </div>
+        <?php
+                        if (isset($_SESSION['cart_item'])) {
+                            $pay = '<div class="row">
+                            <div id="stripe" class="col-md-4">
+                              <button class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary" style="margin-left: 52rem;">Stripe</button>
+                            </div>
+                          </div>';
+                          echo $pay;
+                        }
+                        ?>
+        
     </div>
     <!-- Checkout Page End -->
-
+  
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
@@ -454,7 +466,7 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
             },
 
             // Set up the transaction
-            createOrder: function(data, actions) {
+            createOrder: function (data, actions) {
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
@@ -466,9 +478,8 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
             },
 
             // Finalize the transaction after buyer approval
-            onApprove: function(data, actions) {
-                return actions.order.capture().then(function(details) {
-
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (details) {
                     // Optionally, send the details to your server for further processing
                     $.ajax({
                         url: 'process_payment.php', // Server-side script to handle payment confirmation
@@ -479,10 +490,12 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
                             amount: '<?php echo $formattedTotal; ?>',
                             currency: 'USD'
                         },
-                        success: function(response) {
+                        success: function (response) {
                             var data1 = JSON.parse(response);
+                            console.log(data1);
                             if (data1.success == true) {
                                 // Redirect to thank you page or update the UI
+                                // console.log('redirect');
                                 window.location.href = 'thank_you.php?paymentid=' + data1.message + '';
                             } else {
                                 // Handle failure
@@ -494,37 +507,142 @@ if (!isset($_SESSION['customer_id']) && !isset($_SESSION['access_token'])) {
             },
 
             // Handle payment failure
-            onError: function(err) {
+            onError: function (err) {
                 console.error('An error occurred during the transaction', err);
                 alert('An error occurred during the transaction. Please try again.');
             }
         }).render('#paypal-button-container'); // Render the PayPal button into the container
 
-        function pay() {
-    var handler = StripeCheckout.configure({
-      key: 'pk_test_51Plows02dkkU9uEGj6o1zd2ttuQDLOuzguqIIer9HsbCSD3xeBp2jr0xErKnMVWFddivtFoGvt8HHjJTXTnpDsi800SRepOstE', // your publisher key id
-      locale: 'auto',
-      token: function (token) {
-        var amount = $('#stripe').val() 
-        $.ajax({
-          url:"payment.php",
-          method: 'post',
-          data: { tokenId: token.id, amount: amount },
-          dataType: "json",
-          success: function( response ) {
-            console.log(response.data);
-            $('#token_response').append( '<br />' + JSON.stringify(response.data));
-          }
-        })
-      }
+    </script>
+    <script type="text/javascript">
+
+        var stripedone = false;
+        $(document).ready(function () {
+            $("#stripe").on('click', (function(e) {
+        e.preventDefault();
+        var isValid = true;
+        if ($("#fname1").val() == "") {
+            $("#fname").show().css("color", "red");
+            isValid = false;
+        }
+        if ($("#lname1").val() == "") {
+            $("#lname").show().css("color", "red");
+            isValid = false;
+        }
+        if ($("#address1").val() == "") {
+            $("#address").show().css("color", "red");
+            isValid = false;
+        }
+        if ($("#city1").val() == "") {
+            $("#city").show().css("color", "red");
+            isValid = false;
+        }
+        if ($("#country1").val() == "") {
+            $("#country").show().css("color", "red");
+            isValid = false;
+        }
+        if ($("#postcode1").val() == "") {
+            $("#postcode").show().css("color", "red");
+            isValid = false;
+        }
+        var email = $("#email1").val();
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email == "") {
+            $("#email").show().css("color", "red");
+            isValid = false;
+        } else if (!emailPattern.test(email)) {
+            $("#email").show().css("color", "red").html("Invalid email format");
+            isValid = false;
+        }
+
+        // Validate phone number
+        var mobile = $("#mobile1").val();
+        if (mobile == "") {
+            $("#mobile").show().css("color", "red");
+            isValid = false;
+        } else if (mobile.length < 10) {
+            $("#mobile")
+                .show()
+                .html("Mobile no. should be 10 digits")
+                .css("color", "red");
+            isValid = false;
+        }
+
+
+        if (isValid) {
+            $("#fname,#lname,#address,#city,#country,#postcode,#mobile,#email,#payment").hide();
+            var handler = StripeCheckout.configure({
+                key: 'pk_test_51Pp54dGC4teGxUj2JRnlqxoUfldOau4rwMTc3GAW8LIbdIcIKh4a9frfWsKlPgkwm3Xc15pLpIonzMqNp8outn5s00qgb4gaur',
+                locale: 'auto',
+                token: function (token) {
+                    $.ajax({
+                        url: "stripe/payment.php",
+                        method: 'post',
+                        data: { tokenId: token.id, amount: <?php echo $totalAmount; ?> },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response.data.object === 'charge') {
+                                window.location.href = 'thank_you_1.php?paymentid=' + response.data.balance_transaction + '&orderid=' + response.data.id + '&amount=' + response.data.amount;
+                            } else {
+                                alert('Payment Failed');
+                            }
+                        }
+                    });
+                }
+            });
+
+            handler.open({
+                name: 'Fruitables',
+                description: 'Fruits and Vegetables',
+                amount: <?php echo $totalAmount * 100; ?> // Stripe requires amount in cents
+            });
+        } else {
+            alert('Plz fill all detail before payment');
+            stripedone = false;
+        }
+
+    }));
     });
-  
-    handler.open({
-      name: 'Demo Site',
-      description: '2 widgets',
-      amount: amount * 100
-    });
-  }
+    // if(stripedone == true){
+
+    //     function pay(amount) {
+    //         console.log(amount);
+    //         var handler = StripeCheckout.configure({
+    //             key: 'pk_test_51Pp54dGC4teGxUj2JRnlqxoUfldOau4rwMTc3GAW8LIbdIcIKh4a9frfWsKlPgkwm3Xc15pLpIonzMqNp8outn5s00qgb4gaur', // your publisher key id
+    //             locale: 'auto',
+    //             token: function (token) {
+    //                 // You can access the token ID with `token.id`.
+    //                 // Get the token ID to your server-side code for use.
+    //                 // console.log('Token Created!!');
+    //                 // console.log(token)
+    //                 $('#token_response').html(JSON.stringify(token));
+
+    //                 $.ajax({
+    //                     url: "stripe/payment.php",
+    //                     method: 'post',
+    //                     data: { tokenId: token.id, amount: amount },
+    //                     dataType: "json",
+    //                     success: function (response) {
+    //                         // var data1 = JSON.parse(response);
+    //                         var dat = response.data;
+    //                         console.log(dat);
+    //                         if(dat.object == 'charge'){
+    //                             window.location.href = 'thank_you_1.php?paymentid=' + dat.balance_transaction + '&orderid=' + dat.id + '&amount=' + dat.amount + '';
+    //                         }else{
+    //                             alert('Payment Failed');
+    //                         }
+    //                     }
+    //                 })
+    //             }
+    //         });
+
+    //         handler.open({
+    //             name: 'Fruitables',
+    //             description: 'Fruits and Vegetables',
+    //             amount: amount * 100
+    //         });
+    //     }
+    // }
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
